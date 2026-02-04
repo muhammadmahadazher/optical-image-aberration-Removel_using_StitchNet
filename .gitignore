@@ -1,0 +1,7 @@
+.venv/
+data/
+stitched_results/
+synthetic_tiles/
+__pycache__/
+.idea/
+*.pyc

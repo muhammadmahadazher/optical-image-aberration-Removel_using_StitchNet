@@ -1,167 +1,132 @@
-# 🔬 Optical Image Aberration Removal & Stitching (StitchNet)
+# 🔬 StitchNet: Optical Image Aberration Removal & Seamless Stitching 🧬
 
-![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)
-![PyTorch](https://img.shields.io/badge/PyTorch-2.0%2B-ee4c2c.svg)
-![Streamlit](https://img.shields.io/badge/Streamlit-App-FF4B4B.svg)
-![License](https://img.shields.io/badge/License-MIT-green.svg)
+![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg?style=for-the-badge&logo=python)
+![PyTorch](https://img.shields.io/badge/PyTorch-2.0%2B-ee4c2c.svg?style=for-the-badge&logo=pytorch)
+![Streamlit](https://img.shields.io/badge/Streamlit-App-FF4B4B.svg?style=for-the-badge&logo=streamlit)
+![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)
 
-**StitchNet** is a deep learning-based tool designed to stitch high-resolution microscopy tiles into seamless panoramas. It addresses common optical aberrations and alignment artifacts found in whole-slide imaging (WSI), specifically tailored for datasets like PANDA.
-
-The project offers two modes of operation:
-1.  **AI-Powered Stitching (StitchNet):** Uses a ResNet18-based flow network to predict pixel-wise warps for perfect alignment.
-2.  **Classical Optimization:** Uses cubic polynomial distortion fields and Gauss-Newton optimization for mathematically rigorous stitching without training data.
+**StitchNet** is an advanced deep learning framework designed to solve the "last mile" of microscopy imaging: **seamless tile stitching**. By combining ResNet-based flow prediction with classical geometric optimization, it removes optical aberrations and aligns high-resolution tiles (like those in the PANDA dataset) into perfect, artifact-free panoramas. 🚀
 
 ---
 
-## 🏗️ System Architecture
+## 🎨 System Architecture & Workflow
 
-```mermaid
-graph TD;
-    A[Input: Raw Tiles] --> B{Choose Method};
-    B -->|AI Mode| C[StitchNet (ResNet18)];
-    B -->|Classical Mode| D[Polynomial Distortion Opt];
-    
-    C --> E[Predict Flow Field];
-    D --> F[Optimize Parameters];
-    
-    E --> G[Warp Tiles];
-    F --> G;
-    
-    G --> H[Feathering & Blending];
-    H --> I[Seamless Panorama];
-    I --> J[Auto-Crop Borders];
-    J --> K[Final Output];
-```
-
-**Textual Flow:**
+### 🛠️ High-Level Pipeline
 ```text
-[Input Tiles Folder] 
-       │
-       ▼
-   (Preprocessing)
-   Identify Grid (Rows x Cols)
-       │
-       ├─────────────────────────────────────────────┐
-       ▼                                             ▼
- [ Deep Learning Path ]                      [ Classical Path ]
-       │                                             │
-  Load StitchNet Model                       Define Distortion Model
- (ResNet18 Encoder)                         (Cubic Polynomials)
-       │                                             │
-  Predict Optical Flow                       Optimize Overlap Error
- (Ref Image vs Neighbor)                    (Gauss-Newton Solver)
-       │                                             │
-       └──────────────────────┬──────────────────────┘
-                              ▼
-                        Warp Images
-                              │
-                    Blend & Stitch Canvas
-                              │
-                   Auto-Crop Black Borders
-                              │
-                              ▼
-                     [ Final Panorama ]
+      ┌─────────────────────────────┐
+      │  📥 Input: Raw Image Tiles  │
+      └──────────────┬──────────────┘
+                     │
+      🔍 [Step 1: Grid Inference] ──────────────────┐
+         Identifies Rows x Cols from Filenames      │
+                     │                              │
+      🧠 [Step 2: Core Processing Engine]           │
+         ┌───────────┴───────────┐                  │
+         ▼                       ▼                  │
+  🌈 AI-Powered Mode      🔢 Classical Mode         │
+  (StitchNet Model)       (Poly-Optimization)       │
+  Predicts pixel-wise     Fits Cubic Fields to      │
+  warp/flow fields.       overlap regions.          │
+         │                       │                  │
+         └───────────┬───────────┘                  │
+                     ▼                              │
+      ✨ [Step 3: Warping & Blending] <─────────────┘
+         Applies transforms + Linear Feathering
+                     │
+      ✂️ [Step 4: Smart Auto-Crop]
+         Finds Largest Inner Content Rectangle
+                     │
+      ┌──────────────┴──────────────┐
+      │  🏁 Output: Seamless Slide  │
+      └─────────────────────────────┘
+```
+
+### 🧬 Inside the "StitchNet" Model
+```text
+  Tile Pair (Ref, Nbr)
+          │
+    [ResNet18 Encoder] ───┐
+          │               │
+    [Feature Matching] ───┼──> [Flow Predictor]
+          │               │           │
+    [Warping Layer] <─────┘           ▼
+          │                   [Pixel Warp Map]
+          ▼
+    Aligned Result
 ```
 
 ---
 
-## 🚀 Features
+## ✨ Key Features
 
-*   **Deep Learning Based:** Robust to complex non-linear deformations using `StitchNet`.
-*   **Interactive UI:** User-friendly **Streamlit** dashboard for drag-and-drop stitching.
-*   **Auto-Grid Detection:** Automatically infers grid dimensions from filenames.
-*   **Robust Handling:** Includes classical fallback (Scipy/OpenCV) for verification.
-*   **Large Scale Support:** Efficiently handles large arrays of high-res tiles.
-
----
-
-## 📦 Installation
-
-1.  **Clone the repository:**
-    ```bash
-    git clone https://github.com/muhammadmahadazher/optical-image-aberration-Removel_using_StitchNet.git
-    cd optical-image-aberration-Removel_using_StitchNet
-    ```
-
-2.  **Create a virtual environment (Recommended):**
-    ```bash
-    # Windows
-    python -m venv .venv
-    .\.venv\Scripts\activate
-
-    # Linux/Mac
-    python3 -m venv .venv
-    source .venv/bin/activate
-    ```
-
-3.  **Install dependencies:**
-    ```bash
-    pip install -r requirements.txt
-    ```
+*   **🤖 Deep Learning Precision:** Uses a custom `StitchNet` architecture to handle non-linear optical distortions.
+*   **🧪 Hybrid Approach:** Switch between AI prediction and classical Gauss-Newton optimization.
+*   **🌐 Modern Web Interface:** A fully-featured **Streamlit** dashboard for drag-and-drop stitching.
+*   **📐 Intelligent Auto-Grid:** Detects your slide layout automatically without manual input.
+*   **✂️ Clean Finishes:** Automatic removal of black "stitching borders" using content-aware cropping.
+*   **⚡ Optimized Performance:** Multi-threaded tile loading and GPU-accelerated warping.
 
 ---
 
-## 🖥️ Usage
+## 🚀 Getting Started
 
-### 1. Web Application (Streamlit)
-The easiest way to use the tool.
+### 1️⃣ Clone the Laboratory
+```bash
+git clone https://github.com/muhammadmahadazher/optical-image-aberration-Removel_using_StitchNet.git
+cd optical-image-aberration-Removel_using_StitchNet
+```
 
+### 2️⃣ Prepare the Environment
+```bash
+# Create & Activate Virtual Env
+python -m venv .venv
+.\.venv\Scripts\activate  # Windows
+source .venv/bin/activate # Linux/Mac
+
+# Install Dependencies
+pip install -r requirements.txt
+```
+
+### 3️⃣ Run the Application
 ```bash
 streamlit run streamlit_app.py
 ```
-*   **Upload:** Drag & drop your tile images or a `.zip` file containing them.
-*   **Configure:** Upload custom weights or use the default `models/stitchnet_v2_ep10.pth`.
-*   **Stitch:** Click "Stitch Tiles" and download the high-res result.
-
-### 2. Training StitchNet
-To train the model on your own dataset (e.g., PANDA tiles):
-
-```bash
-python train_stitch_v2.py --tiles_dir data/panda_tiles --epochs 10 --batch_size 8
-```
-
-### 3. Classical Inference (CLI)
-To run the classical stitching algorithm on a directory:
-
-```bash
-python stitch_auto.py --input_dir data/sample_slide
-```
 
 ---
 
-## 📂 Project Structure
+## 📂 Project Anatomy
 
-```text
-.
-├── models/
-│   ├── stitchnet.py       # PyTorch Model Architecture (ResNet-Flow)
-│   ├── losses.py          # Training loss functions
-│   └── stitchnet_v2_ep10.pth # Pre-trained model weights
-├── data/                  # Place your input datasets here
-├── stitched_results/      # Output directory for results
-├── main.py                # Main entry point for CLI experiments
-├── stitch_auto.py         # Classical stitching implementation
-├── streamlit_app.py       # Web Interface source code
-├── train_stitch_v2.py     # Training script
-├── requirements.txt       # Python dependencies
-└── README.md              # Documentation
-```
+*   `models/` 🧠: Contains `stitchnet.py` (Architecture) and pre-trained `.pth` weights.
+*   `stitch_auto.py` 🔢: The "brain" of the classical optimization pipeline.
+*   `train_stitch_v2.py` 🎓: Advanced training script for fine-tuning on new datasets.
+*   `data/` 📁: Home for your input tiles (supports PANDA format).
+*   `stitched_results/` 🖼️: Output directory for your final high-res panoramas.
 
 ---
 
 ## 📝 Release Notes
 
-### v1.0.0 (Initial Release)
-*   ✅ **Core:** Implemented `StitchNet` architecture for optical aberration removal.
-*   ✅ **UI:** Added Streamlit web interface for easy usage.
-*   ✅ **Classic:** Integrated `scipy.optimize` pipeline for baseline comparisons.
-*   ✅ **Auto-Crop:** Added smart cropping to remove black artifacts from stitched images.
-*   ✅ **Docs:** Comprehensive documentation and setup guide.
+### 🚀 v1.2.0 (Latest Release)
+*   **Beautified UX:** Total overhaul of the README and UI with intuitive emojis and diagrams.
+*   **Auto-Detection+:** Improved grid inference logic to handle missing tiles in a sequence.
+*   **Stability:** Fixed a bug in the feathering mask that caused faint lines at tile borders.
+
+### 📈 v1.1.0
+*   **AI Integration:** Introduced the ResNet18-Flow architecture for superior alignment.
+*   **Web App:** Launched the Streamlit-based graphical interface.
+*   **Batch Support:** Added ability to process entire ZIP archives of tiles.
+
+### 🏁 v1.0.0
+*   **Core Engine:** Initial implementation of classical cubic polynomial distortion removal.
+*   **Optimization:** Gauss-Newton solver integration for overlap error minimization.
 
 ---
 
 ## 🤝 Contributing
-Contributions are welcome! Please open an issue or submit a pull request for any bugs or feature enhancements.
+Contributions make the world go round! 🌍 If you have a fix or a feature, feel free to fork and PR.
 
 ## 📄 License
-This project is licensed under the MIT License.
+Licensed under the MIT License - see [LICENSE](LICENSE) for details.
+
+---
+*Developed with ❤️ for the Digital Pathology & Microscopy Community.*

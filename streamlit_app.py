@@ -23,39 +23,41 @@ Image.MAX_IMAGE_PIXELS = None
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 # --- UI Configuration ---
-st.set_page_config(page_title="PANDA Tile Stitcher", page_icon="🧬", layout="wide")
-st.sidebar.title("⚙️ Stitching Options")
+st.set_page_config(page_title="StitchNet | PANDA Tile Stitcher", page_icon="🧬", layout="wide")
+st.sidebar.title("⚙️ Configuration")
 
 # --- User Inputs in Sidebar ---
-weights_up = st.sidebar.file_uploader("Upload Model Weights (.pth)", ["pth"])
-tile_px = st.sidebar.slider("Processing Tile Size (px)", 128, 1024, 512, 64)
+st.sidebar.markdown("### 🛠️ Model Settings")
+weights_up = st.sidebar.file_uploader("Upload Model Weights (.pth)", ["pth"], help="Upload your custom trained StitchNet weights here.")
+tile_px = st.sidebar.slider("Processing Tile Size (px)", 128, 1024, 512, 64, help="Resizes tiles before processing. Larger is slower but more detailed.")
 
 # --- MANUAL GRID OVERRIDE ---
 st.sidebar.markdown("---")
-st.sidebar.markdown("### Manual Grid Control")
-st.sidebar.info("If auto-detection fails, manually set the grid width (columns) here.")
+st.sidebar.markdown("### 📏 Grid Control")
+st.sidebar.info("💡 If auto-detection fails, manually set the grid width (columns) here.")
 manual_cols = st.sidebar.number_input("Grid Width (Columns)", min_value=0, value=0,
-                                      help="Set to 0 for auto-detection. A common value for PANDA is 35 or 36.")
+                                      help="Set to 0 for auto-detection. For PANDA, 35 or 36 is common.")
 
 # --- Handle Model Weights ---
 weights_dir = Path(__file__).parent / "weights"
 weights_dir.mkdir(exist_ok=True)
-default_weights = "models/stitchnet_v2_ep10.pth"  # Uses the correctly trained model
+default_weights = "models/stitchnet_v2_ep10.pth"  
 w_path = default_weights
 
 if weights_up:
     w_path = weights_dir / "custom_weights.pth"
     w_path.write_bytes(weights_up.getbuffer())
-    st.sidebar.success(f"Using uploaded weights: {weights_up.name}")
+    st.sidebar.success(f"✅ Using: {weights_up.name}")
 elif not os.path.exists(default_weights):
-    st.sidebar.warning(f"Default weights '{default_weights}' not found. Please upload a model.")
+    st.sidebar.warning(f"⚠️ Default weights not found!")
     w_path = None
 else:
-    st.sidebar.info(f"Using default weights.")
+    st.sidebar.info(f"✨ Using pre-trained weights.")
 
 # --- Main Application Area ---
-st.markdown("<h2 style='text-align:center'>🔬 High-Resolution Tile Stitcher</h2>", unsafe_allow_html=True)
-uploads = st.file_uploader("Drop PNG tiles or a single ZIP archive", ["png", "zip"], accept_multiple_files=True)
+st.markdown("<h1 style='text-align:center'>🔬 StitchNet: High-Res Tile Stitcher</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align:center; color: gray;'>Seamlessly combine microscopy tiles using Deep Learning</p>", unsafe_allow_html=True)
+uploads = st.file_uploader("📂 Drop PNG tiles or a ZIP archive here", ["png", "zip"], accept_multiple_files=True)
 
 
 # --- Helper Functions ---
@@ -96,12 +98,12 @@ def find_largest_inner_rectangle(image_mask):
 
 
 # --- Stitching Logic ---
-if st.button("Stitch Tiles 🧬") and uploads:
+if st.button("🚀 Start Stitching Tiles") and uploads:
     if not w_path or not os.path.exists(w_path):
-        st.error("Model weights are not available. Please upload a .pth file.");
+        st.error("❌ Model weights are not available. Please upload a .pth file.");
         st.stop()
 
-    with st.spinner("Preparing tiles..."):
+    with st.spinner("📦 Preparing tiles..."):
         # Unpack and organize tile paths
         tmpdir = Path(tempfile.mkdtemp())
         paths = []
@@ -114,21 +116,21 @@ if st.button("Stitch Tiles 🧬") and uploads:
                 (tmpdir / f.name).write_bytes(f.getbuffer());
                 paths.append(tmpdir / f.name)
 
-        if len(paths) < 2: st.error("Stitching requires at least 2 tiles."); st.stop()
+        if len(paths) < 2: st.error("🛑 Stitching requires at least 2 tiles."); st.stop()
 
         paths.sort(key=lambda p: int(p.stem.split('_')[-1]))
         indices = [int(p.stem.split('_')[-1]) for p in paths]
         path_dict = {idx: str(p) for idx, p in zip(indices, paths)}
 
-    with st.spinner("Analyzing grid and loading model..."):
+    with st.spinner("🧠 Analyzing grid and loading model..."):
         # Use manual grid width if provided, otherwise auto-detect.
         if manual_cols > 0:
             cols = manual_cols
             rows = -(-max(indices) // cols) if cols > 0 else 0
-            st.success(f"Using manual grid dimensions: {rows} × {cols}")
+            st.success(f"📏 Using manual grid: {rows} × {cols}")
         else:
             rows, cols = infer_grid_robust(indices)
-            st.success(f"Auto-detected grid dimensions: {rows} × {cols}")
+            st.success(f"🔍 Auto-detected grid: {rows} × {cols}")
 
         dev = 'cuda' if torch.cuda.is_available() else 'cpu'
         net = StitchNet().to(dev).eval();
@@ -140,7 +142,7 @@ if st.button("Stitch Tiles 🧬") and uploads:
     canvas = np.zeros((rows * H + 2 * pad, cols * W + 2 * pad, 3), np.float32)
     alpha_mask = np.zeros(canvas.shape[:2], np.float32)
 
-    bar = st.progress(0, "Stitching tiles...")
+    bar = st.progress(0, "🎨 Stitching tiles...")
     min_idx = indices[0] if indices else 0
     for i, idx in enumerate(indices):
         r, c = divmod(idx - min_idx, cols)
@@ -180,9 +182,9 @@ if st.button("Stitch Tiles 🧬") and uploads:
 
         canvas[y:y + H + 2 * pad, x:x + W + 2 * pad] += tile_to_paste * feather
         alpha_mask[y:y + H + 2 * pad, x:x + W + 2 * pad] += feather.squeeze()
-        bar.progress((i + 1) / len(indices))
+        bar.progress((i + 1) / len(indices), text=f"🎨 Processing tile {i+1}/{len(indices)}")
 
-    with st.spinner("Finalizing image..."):
+    with st.spinner("✨ Finalizing image..."):
         alpha_mask[alpha_mask == 0] = 1e-6
         stitched_float = (canvas / alpha_mask[..., None]).clip(0, 1)
         stitched_padded = (stitched_float * 255).astype(np.uint8)
@@ -195,7 +197,7 @@ if st.button("Stitch Tiles 🧬") and uploads:
 
     if final_stitched.size == 0:
         st.error(
-            "Stitching resulted in an empty image. The grid dimensions may be incorrect. Try setting the width manually.")
+            "🛑 Stitching resulted in an empty image. The grid dimensions may be incorrect. Try setting the width manually.")
     else:
         h_final, w_final = final_stitched.shape[:2]
         max_side = 4000
@@ -203,6 +205,7 @@ if st.button("Stitch Tiles 🧬") and uploads:
                                               int(h_final * max_side / max(h_final, w_final))),
                              interpolation=cv2.INTER_AREA) if max(h_final, w_final) > max_side else final_stitched
 
+        st.success("✅ Stitching Complete!")
         st.subheader("🖼️ Stitched Panorama (Preview)")
         st.image(preview, channels="BGR", use_container_width=True, caption=f"Final dimensions: {h_final}×{w_final}px")
 

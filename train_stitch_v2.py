@@ -36,11 +36,11 @@ class PandaNeighborDataset(Dataset):
         Scans the directory to find all valid horizontal and vertical
         neighboring tiles and returns them as a list of path pairs.
         """
-        print("Scanning for adjacent tile pairs...")
+        print("🔍 Scanning for adjacent tile pairs...")
         slide_folders = [d for d in os.listdir(self.root_dir) if os.path.isdir(os.path.join(self.root_dir, d))]
         all_pairs = []
 
-        for slide in tqdm(slide_folders, desc="Processing slides"):
+        for slide in tqdm(slide_folders, desc="🔬 Processing slides"):
             slide_path = os.path.join(self.root_dir, slide)
             paths = sorted(glob.glob(os.path.join(slide_path, '*.png')),
                            key=lambda p: int(os.path.splitext(os.path.basename(p))[0].split('_')[-1]))
@@ -70,7 +70,7 @@ class PandaNeighborDataset(Dataset):
                 if (idx + cols) in path_dict:
                     all_pairs.append((ref_path, path_dict[idx + cols]))
 
-        print(f"Found {len(all_pairs)} neighboring tile pairs.")
+        print(f"✅ Found {len(all_pairs)} neighboring tile pairs.")
         return all_pairs
 
     def __len__(self):
@@ -90,7 +90,7 @@ def train(data_dir, epochs, batch_size, learning_rate, workers):
     The main training loop.
     """
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    print(f"Using device: {device}")
+    print(f"🚀 Using device: {device}")
 
     # Initialize Dataset and DataLoader
     dataset = PandaNeighborDataset(root_dir=data_dir)
@@ -100,12 +100,12 @@ def train(data_dir, epochs, batch_size, learning_rate, workers):
     model = StitchNet().to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate)
 
-    print("Starting training...")
+    print("🧠 Starting training...")
     for epoch in range(1, epochs + 1):
         model.train()
         running_loss = 0.0
 
-        progress_bar = tqdm(dataloader, desc=f"Epoch {epoch}/{epochs}")
+        progress_bar = tqdm(dataloader, desc=f"📅 Epoch {epoch}/{epochs}")
         for ref_tiles, nbr_tiles in progress_bar:
             ref_tiles = ref_tiles.to(device)
             nbr_tiles = nbr_tiles.to(device)
@@ -125,11 +125,11 @@ def train(data_dir, epochs, batch_size, learning_rate, workers):
             progress_bar.set_postfix({'loss': f'{loss.item():.4f}'})
 
         avg_loss = running_loss / len(dataloader)
-        print(f"Epoch {epoch} finished. Average Loss: {avg_loss:.4f}")
+        print(f"✨ Epoch {epoch} finished. Average Loss: {avg_loss:.4f}")
 
         # Save a checkpoint after each epoch
         torch.save(model.state_dict(), f"models/stitchnet_v2_ep{epoch}.pth")
-        print(f"Saved checkpoint to models/stitchnet_v2_ep{epoch}.pth")
+        print(f"💾 Saved checkpoint to models/stitchnet_v2_ep{epoch}.pth")
 
 
 if __name__ == "__main__":

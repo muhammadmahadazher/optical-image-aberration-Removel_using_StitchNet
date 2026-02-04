@@ -109,26 +109,26 @@ def blend_full(grid, d, overlap):
 def main():
     args = parse_args()
     sid, R, C, grid = find_tiles_by_index(args.input_dir)
-    print(f"SlideID={sid}, grid={R}×{C}")
+    print(f"🔬 SlideID={sid}, grid={R}×{C}")
     # detect tile size
     sample = cv2.imread(os.path.join(args.input_dir, grid[0][0]), cv2.IMREAD_GRAYSCALE)
     H0, W0 = sample.shape
-    print(f"Tile size: {W0}×{H0}")
+    print(f"📏 Tile size: {W0}×{H0}")
     # calibration subset
     subR, subC = min(3,R), min(3,C)
     sub = [[grid[i][j] for j in range(subC)] for i in range(subR)]
     grid_sub = load_grid(args.input_dir, sub, W0, H0)
-    print(f"Calibrating on {subR}×{subC} subset")
+    print(f"🧪 Calibrating on {subR}×{subC} subset...")
     d0 = np.zeros(10)
     res = least_squares(overlap_error, d0, args=(grid_sub, args.overlap),
                         verbose=2, max_nfev=20)
     d_opt = res.x
-    print("Distortion params:", d_opt)
+    print(f"✅ Distortion params optimized: {d_opt}")
     full = load_grid(args.input_dir, grid, W0, H0)
-    print("Blending full mosaic")
+    print("🎨 Blending full mosaic...")
     out = blend_full(full, d_opt, args.overlap)
     cv2.imwrite("stitched_result.png", out)
-    print("Saved stitched_result.png")
+    print("✨ Saved: stitched_result.png")
 
 if __name__=="__main__":
     main()

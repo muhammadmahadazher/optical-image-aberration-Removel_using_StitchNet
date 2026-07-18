@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import builtins
 import io
 import time
 from pathlib import Path
@@ -65,3 +66,27 @@ def test_api_rejects_unknown_file_type(tmp_path: Path, monkeypatch) -> None:
         )
     assert response.status_code == 422
     assert "Unsupported upload type" in str(response.json()["detail"])
+
+
+def test_health_without_ml_extra_stays_available(tmp_path: Path, monkeypatch) -> None:
+    checkpoint = tmp_path / "gated_raft.pt"
+    checkpoint.write_bytes(b"checkpoint-present")
+    real_import = builtins.__import__
+
+    def import_without_torch(name, *args, **kwargs):
+        if name == "torch":
+            raise ImportError("optional ML runtime is not installed")
+        return real_import(name, *args, **kwargs)
+
+    monkeypatch.setattr(api_module, "LEARNED_CHECKPOINT", checkpoint)
+    monkeypatch.setattr(builtins, "__import__", import_without_torch)
+    api_module._learned_model_status.cache_clear()
+    try:
+        payload = api_module.health()
+    finally:
+        api_module._learned_model_status.cache_clear()
+
+    assert payload["status"] == "ok"
+    assert payload["learned_model"]["checkpoint_present"] is True
+    assert payload["learned_model"]["available"] is False
+    assert payload["learned_model"]["reason"] == "ml_extra_not_installed"

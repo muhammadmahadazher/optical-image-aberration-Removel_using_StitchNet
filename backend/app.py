@@ -101,21 +101,35 @@ async def _save_upload(upload: UploadFile, destination: Path, remaining: int) ->
 
 @lru_cache(maxsize=1)
 def _learned_model_status() -> dict[str, object]:
+    checkpoint_present = LEARNED_CHECKPOINT.is_file()
     state: dict[str, object] = {
-        "available": LEARNED_CHECKPOINT.is_file(),
+        "available": False,
+        "checkpoint_present": checkpoint_present,
         "quality_gate_passed": False,
         "checkpoint": LEARNED_CHECKPOINT.name,
     }
-    if not state["available"]:
+    if not checkpoint_present:
+        state["reason"] = "checkpoint_missing"
         return state
     try:
         import torch
-
+    except ImportError:
+        state["reason"] = "ml_extra_not_installed"
+        return state
+    try:
         metadata = torch.load(LEARNED_CHECKPOINT, map_location="cpu", weights_only=True)
+        if not isinstance(metadata, dict):
+            raise TypeError("checkpoint metadata must be a dictionary")
         state["quality_gate_passed"] = metadata.get("quality_gate_passed") is True
-        state["architecture"] = metadata.get("architecture", {}).get("name")
+        architecture = metadata.get("architecture")
+        state["architecture"] = (
+            architecture.get("name") if isinstance(architecture, dict) else None
+        )
+        state["available"] = state["quality_gate_passed"]
+        if not state["available"]:
+            state["reason"] = "checkpoint_failed_quality_gate"
     except (OSError, RuntimeError, ValueError, TypeError):
-        state["available"] = False
+        state["reason"] = "checkpoint_unreadable"
     return state
 
 

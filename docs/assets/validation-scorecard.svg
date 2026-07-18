@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="500" viewBox="0 0 1440 500" role="img" aria-labelledby="title desc">
+  <title id="title">StitchNet engineering validation scorecard</title>
+  <desc id="desc">Measured results include 0.584 pixel p95 placement error on the NIST MIST 25-tile phase mosaic, 20.18 percent error reduction on held-out H and E synthetic warps, four of four stress scenarios passed, and twenty-six of twenty-six automated tests passed.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#F7FAFF"/>
+      <stop offset="1" stop-color="#EAF1FF"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#496CF2"/>
+      <stop offset="1" stop-color="#1E9B79"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#162A4D" flood-opacity=".13"/>
+    </filter>
+    <style>
+      .eyebrow{font:700 15px Inter,Segoe UI,Arial,sans-serif;letter-spacing:2px;fill:#536A8D}
+      .heading{font:700 32px Inter,Segoe UI,Arial,sans-serif;fill:#12213A}
+      .value{font:750 42px Inter,Segoe UI,Arial,sans-serif;fill:#152B50}
+      .label{font:700 16px Inter,Segoe UI,Arial,sans-serif;fill:#243B62}
+      .detail{font:400 14px Inter,Segoe UI,Arial,sans-serif;fill:#667A99}
+      .foot{font:600 14px Inter,Segoe UI,Arial,sans-serif;fill:#536A8D}
+    </style>
+  </defs>
+  <rect width="1440" height="500" rx="32" fill="url(#bg)"/>
+  <rect x="0" y="0" width="1440" height="8" rx="4" fill="url(#accent)"/>
+  <text x="64" y="65" class="eyebrow">REPRODUCIBLE ENGINEERING EVIDENCE</text>
+  <text x="64" y="107" class="heading">Measured beyond the happy path</text>
+
+  <g filter="url(#shadow)">
+    <g transform="translate(60 152)">
+      <rect width="306" height="222" rx="26" fill="#FFFFFF" stroke="#D7E2F5"/>
+      <circle cx="48" cy="46" r="24" fill="#E7ECFF"/>
+      <path d="M35 48h26M48 35v26" stroke="#496CF2" stroke-width="4" stroke-linecap="round"/>
+      <text x="28" y="111" class="value">0.584 px</text>
+      <text x="28" y="145" class="label">NIST placement p95</text>
+      <text x="28" y="175" class="detail">25-tile phase mosaic · coverage 1.000</text>
+      <text x="28" y="197" class="detail">Zero registration fallbacks</text>
+    </g>
+
+    <g transform="translate(398 152)">
+      <rect width="306" height="222" rx="26" fill="#FFFFFF" stroke="#D7E2F5"/>
+      <circle cx="48" cy="46" r="24" fill="#E1F7F0"/>
+      <path d="M34 52l10-10 8 7 12-16" fill="none" stroke="#1E9B79" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="28" y="111" class="value">20.18%</text>
+      <text x="28" y="145" class="label">H&amp;E error reduction</text>
+      <text x="28" y="175" class="detail">Held-out synthetic optical warp test</text>
+      <text x="28" y="197" class="detail">Learned proposals remain independently gated</text>
+    </g>
+
+    <g transform="translate(736 152)">
+      <rect width="306" height="222" rx="26" fill="#FFFFFF" stroke="#D7E2F5"/>
+      <circle cx="48" cy="46" r="24" fill="#FFF1DF"/>
+      <path d="M36 47l8 8 17-21" fill="none" stroke="#BD7828" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="28" y="111" class="value">4 / 4</text>
+      <text x="28" y="145" class="label">Stress scenarios passed</text>
+      <text x="28" y="175" class="detail">Deterministic difficult-input coverage</text>
+      <text x="28" y="197" class="detail">Geometry, exposure, and fallback behavior</text>
+    </g>
+
+    <g transform="translate(1074 152)">
+      <rect width="306" height="222" rx="26" fill="#FFFFFF" stroke="#D7E2F5"/>
+      <circle cx="48" cy="46" r="24" fill="#E7ECFF"/>
+      <path d="M36 47l8 8 17-21" fill="none" stroke="#496CF2" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="28" y="111" class="value">26 / 26</text>
+      <text x="28" y="145" class="label">Automated tests passed</text>
+      <text x="28" y="175" class="detail">Core · API · archives · integration · ML</text>
+      <text x="28" y="197" class="detail">Cross-platform CI on Python 3.10–3.12</text>
+    </g>
+  </g>
+
+  <text x="60" y="434" class="foot">Measured 18 July 2026  ·  Full conditions and limitations in docs/EVALUATION.md  ·  Not clinical validation</text>
+</svg>

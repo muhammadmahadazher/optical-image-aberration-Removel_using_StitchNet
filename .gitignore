@@ -5,3 +5,17 @@ synthetic_tiles/
 __pycache__/
 .idea/
 *.pyc
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+var/
+tmp/
+frontend/node_modules/
+frontend/.next/
+frontend/.wrangler/
+frontend/dist/
+frontend/.env.local

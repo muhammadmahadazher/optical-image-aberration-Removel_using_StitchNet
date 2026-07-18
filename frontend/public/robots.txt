@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://muhammadmahadazher.github.io/optical-image-aberration-Removel_using_StitchNet/sitemap.xml

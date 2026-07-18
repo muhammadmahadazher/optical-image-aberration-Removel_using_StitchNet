@@ -1,0 +1,116 @@
+{
+  "format_version": 1,
+  "architecture": {
+    "name": "torchvision-raft-small-gated",
+    "num_flow_updates": 4,
+    "minimum_improvement": 0.01,
+    "max_flow_pixels": 12.0,
+    "parameters": 990162,
+    "pretrained_weights": "Raft_Small_Weights.DEFAULT"
+  },
+  "training": {
+    "seed": 7823,
+    "epochs": 6,
+    "steps_per_epoch": 30,
+    "batch_size": 2,
+    "crop_size": 128,
+    "learning_rate": 1e-05,
+    "device": "cuda",
+    "runtime_seconds": 20.675,
+    "train_source_count": 20,
+    "validation_source_count": 5
+  },
+  "validation": {
+    "baseline_mae": 0.02072748914361,
+    "corrected_mae": 0.02066411543637514,
+    "improvement_fraction": 0.003057471495740559,
+    "identity_mae": 0.0,
+    "flow_mae_pixels": 0.5197047926485538,
+    "acceptance_fraction": 0.0625,
+    "samples": 16
+  },
+  "open_world": {
+    "baseline_mae": 0.05219753955801328,
+    "corrected_mae": 0.041665224358439445,
+    "improvement_fraction": 0.20177800119999972,
+    "identity_mae": 0.0,
+    "flow_mae_pixels": 0.38923475332558155,
+    "acceptance_fraction": 0.4375,
+    "samples": 16
+  },
+  "quality_gate_passed": true,
+  "data": {
+    "training_root": "data\\external\\nist_mist\\tiles\\Small_Phase_Test_Dataset\\image-tiles",
+    "open_world_source": "data\\external\\openslide\\CMU-1-Small-Region.svs",
+    "open_world_sha256": "ed92d5a9f2e86df67640d6f92ce3e231419ce127131697fbbce42ad5e002c8a7"
+  },
+  "intended_use": "Quality-gated residual correspondence for microscopy preprocessing; not clinically validated and disabled by default.",
+  "history": [
+    {
+      "epoch": 1.0,
+      "train_loss": 0.7111988474925359,
+      "validation_baseline_mae": 0.019986077134187024,
+      "validation_corrected_mae": 0.019986077134187024,
+      "validation_improvement_fraction": 0.0,
+      "validation_identity_mae": 0.0,
+      "validation_flow_mae_pixels": 0.5125535991974175,
+      "validation_acceptance_fraction": 0.0,
+      "validation_samples": 16
+    },
+    {
+      "epoch": 2.0,
+      "train_loss": 0.7973073785503705,
+      "validation_baseline_mae": 0.017731522520383198,
+      "validation_corrected_mae": 0.017673758789896965,
+      "validation_improvement_fraction": 0.003257685876654462,
+      "validation_identity_mae": 0.0,
+      "validation_flow_mae_pixels": 0.584352950565517,
+      "validation_acceptance_fraction": 0.125,
+      "validation_samples": 16
+    },
+    {
+      "epoch": 3.0,
+      "train_loss": 0.5703848938147227,
+      "validation_baseline_mae": 0.017632131464779377,
+      "validation_corrected_mae": 0.017597341056292255,
+      "validation_improvement_fraction": 0.0019731255155746273,
+      "validation_identity_mae": 0.0,
+      "validation_flow_mae_pixels": 0.8366001769900322,
+      "validation_acceptance_fraction": 0.1875,
+      "validation_samples": 16
+    },
+    {
+      "epoch": 4.0,
+      "train_loss": 0.5090671248733998,
+      "validation_baseline_mae": 0.01743679229790966,
+      "validation_corrected_mae": 0.01741947792470455,
+      "validation_improvement_fraction": 0.0009929792652965353,
+      "validation_identity_mae": 0.0,
+      "validation_flow_mae_pixels": 0.5579025186598301,
+      "validation_acceptance_fraction": 0.0625,
+      "validation_samples": 16
+    },
+    {
+      "epoch": 5.0,
+      "train_loss": 0.6032783086101214,
+      "validation_baseline_mae": 0.019861037842929363,
+      "validation_corrected_mae": 0.01981596245119969,
+      "validation_improvement_fraction": 0.00226953858535236,
+      "validation_identity_mae": 0.0,
+      "validation_flow_mae_pixels": 0.8909657672047615,
+      "validation_acceptance_fraction": 0.0625,
+      "validation_samples": 16
+    },
+    {
+      "epoch": 6.0,
+      "train_loss": 0.5446554340422154,
+      "validation_baseline_mae": 0.01946379927297433,
+      "validation_corrected_mae": 0.019433678438266117,
+      "validation_improvement_fraction": 0.001547531100469006,
+      "validation_identity_mae": 0.0,
+      "validation_flow_mae_pixels": 0.650857999920845,
+      "validation_acceptance_fraction": 0.0625,
+      "validation_samples": 16
+    }
+  ]
+}

@@ -1,0 +1,165 @@
+{
+  "format_version": 1,
+  "architecture": {
+    "name": "ResidualWarpNet",
+    "max_flow_pixels": 7.0,
+    "parameters": 811890
+  },
+  "training": {
+    "seed": 7319,
+    "epochs": 12,
+    "steps_per_epoch": 80,
+    "batch_size": 8,
+    "crop_size": 160,
+    "learning_rate": 0.0002,
+    "device": "cuda",
+    "runtime_seconds": 43.146,
+    "train_source_count": 20,
+    "validation_source_count": 5
+  },
+  "validation": {
+    "baseline_mae": 0.020210896333058673,
+    "corrected_mae": 0.020210806131362915,
+    "improvement_fraction": 4.463023028373893e-06,
+    "identity_mae": 3.4692894162920613e-06,
+    "flow_mae_pixels": 0.8191554355621338,
+    "samples": 32
+  },
+  "open_world": {
+    "baseline_mae": 0.06316816806793213,
+    "corrected_mae": 0.06314588546752929,
+    "improvement_fraction": 0.0003527504609421938,
+    "identity_mae": 0.00012335788769026598,
+    "flow_mae_pixels": 0.8100059318542481,
+    "samples": 32
+  },
+  "quality_gate_passed": false,
+  "data": {
+    "training_root": "data\\external\\nist_mist\\tiles\\Small_Phase_Test_Dataset\\image-tiles",
+    "open_world_source": "data\\external\\openslide\\CMU-1-Small-Region.svs",
+    "open_world_sha256": "ed92d5a9f2e86df67640d6f92ce3e231419ce127131697fbbce42ad5e002c8a7"
+  },
+  "intended_use": "Experimental residual alignment for microscopy preprocessing; not clinically validated and disabled by default.",
+  "history": [
+    {
+      "epoch": 1.0,
+      "train_loss": 0.06039419213775545,
+      "validation_baseline_mae": 0.01761487007141113,
+      "validation_corrected_mae": 0.017615413665771483,
+      "validation_improvement_fraction": -3.085996990880657e-05,
+      "validation_identity_mae": 3.767873626202345e-05,
+      "validation_flow_mae_pixels": 0.7113885116577149,
+      "validation_samples": 32
+    },
+    {
+      "epoch": 2.0,
+      "train_loss": 0.05608933102339506,
+      "validation_baseline_mae": 0.021262028614679972,
+      "validation_corrected_mae": 0.02126148502031962,
+      "validation_improvement_fraction": 2.5566439129706104e-05,
+      "validation_identity_mae": 1.2134566980724534e-05,
+      "validation_flow_mae_pixels": 0.7584242057800293,
+      "validation_samples": 32
+    },
+    {
+      "epoch": 3.0,
+      "train_loss": 0.05734143229201436,
+      "validation_baseline_mae": 0.017325915495554605,
+      "validation_corrected_mae": 0.01732669393221537,
+      "validation_improvement_fraction": -4.4929034830291655e-05,
+      "validation_identity_mae": 3.782989069198569e-05,
+      "validation_flow_mae_pixels": 0.7488819599151612,
+      "validation_samples": 32
+    },
+    {
+      "epoch": 4.0,
+      "train_loss": 0.062200185772962865,
+      "validation_baseline_mae": 0.01995404005050659,
+      "validation_corrected_mae": 0.019953909317652386,
+      "validation_improvement_fraction": 6.551698496868988e-06,
+      "validation_identity_mae": 1.7740157588074605e-05,
+      "validation_flow_mae_pixels": 0.649847240447998,
+      "validation_samples": 32
+    },
+    {
+      "epoch": 5.0,
+      "train_loss": 0.05892956955358386,
+      "validation_baseline_mae": 0.020099957784016926,
+      "validation_corrected_mae": 0.020099904934565226,
+      "validation_improvement_fraction": 2.6293314776194357e-06,
+      "validation_identity_mae": 2.0031024081011614e-05,
+      "validation_flow_mae_pixels": 0.8389226722717286,
+      "validation_samples": 32
+    },
+    {
+      "epoch": 6.0,
+      "train_loss": 0.05963214004877955,
+      "validation_baseline_mae": 0.01969497760136922,
+      "validation_corrected_mae": 0.01969382961591085,
+      "validation_improvement_fraction": 5.828823376226128e-05,
+      "validation_identity_mae": 3.10338979276518e-05,
+      "validation_flow_mae_pixels": 0.6358955478668213,
+      "validation_samples": 32
+    },
+    {
+      "epoch": 7.0,
+      "train_loss": 0.058321000239811835,
+      "validation_baseline_mae": 0.02183256427447001,
+      "validation_corrected_mae": 0.021832273801167805,
+      "validation_improvement_fraction": 1.3304589353534326e-05,
+      "validation_identity_mae": 1.1470661653826635e-05,
+      "validation_flow_mae_pixels": 0.7972792434692383,
+      "validation_samples": 32
+    },
+    {
+      "epoch": 8.0,
+      "train_loss": 0.05968074032571167,
+      "validation_baseline_mae": 0.01919040560722351,
+      "validation_corrected_mae": 0.019190341234207153,
+      "validation_improvement_fraction": 3.354437507780581e-06,
+      "validation_identity_mae": 9.840915445238353e-06,
+      "validation_flow_mae_pixels": 0.7222336673736572,
+      "validation_samples": 32
+    },
+    {
+      "epoch": 9.0,
+      "train_loss": 0.06430829532910139,
+      "validation_baseline_mae": 0.017021263043085735,
+      "validation_corrected_mae": 0.01702123721440633,
+      "validation_improvement_fraction": 1.5174361231722115e-06,
+      "validation_identity_mae": 3.4692894162920613e-06,
+      "validation_flow_mae_pixels": 0.8930596923828125,
+      "validation_samples": 32
+    },
+    {
+      "epoch": 10.0,
+      "train_loss": 0.06021352022653446,
+      "validation_baseline_mae": 0.019445850054423015,
+      "validation_corrected_mae": 0.019445652961730956,
+      "validation_improvement_fraction": 1.013546291407567e-05,
+      "validation_identity_mae": 4.797541866234193e-06,
+      "validation_flow_mae_pixels": 0.7571325397491455,
+      "validation_samples": 32
+    },
+    {
+      "epoch": 11.0,
+      "train_loss": 0.05718754833796993,
+      "validation_baseline_mae": 0.020605790615081786,
+      "validation_corrected_mae": 0.020605812867482504,
+      "validation_improvement_fraction": -1.0799100666840137e-06,
+      "validation_identity_mae": 3.6372043541632593e-06,
+      "validation_flow_mae_pixels": 0.8012690448760986,
+      "validation_samples": 32
+    },
+    {
+      "epoch": 12.0,
+      "train_loss": 0.0582116594305262,
+      "validation_baseline_mae": 0.018421529928843182,
+      "validation_corrected_mae": 0.018421423037846885,
+      "validation_improvement_fraction": 5.802503739384337e-06,
+      "validation_identity_mae": 4.659731639549136e-06,
+      "validation_flow_mae_pixels": 0.7090502262115479,
+      "validation_samples": 32
+    }
+  ]
+}

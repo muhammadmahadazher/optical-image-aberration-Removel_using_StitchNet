@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use StitchNet Laboratory in research, please cite this software."
+title: "StitchNet Laboratory: Confidence-aware microscopy mosaic reconstruction"
+type: software
+authors:
+  - family-names: Azher
+    given-names: Muhammad Mahad
+repository-code: "https://github.com/muhammadmahadazher/optical-image-aberration-Removel_using_StitchNet"
+url: "https://muhammadmahadazher.github.io/optical-image-aberration-Removel_using_StitchNet/"
+version: 2.0.0
+date-released: 2026-07-18
+keywords:
+  - microscopy
+  - image stitching
+  - digital pathology
+  - medical imaging
+  - image mosaic
+  - computer vision
+  - optical flow
+license: MIT
+abstract: >-
+  Research software for robust pairwise registration, globally consistent tile
+  placement, exposure-aware blending, gated learned correspondence refinement,
+  and auditable microscopy mosaic quality reports.

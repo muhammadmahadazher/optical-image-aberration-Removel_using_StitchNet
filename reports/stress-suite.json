@@ -1,0 +1,89 @@
+{
+  "suite": "deterministic-local-stress",
+  "passed": true,
+  "runtime_seconds": 6.464739100003499,
+  "cases": {
+    "textured_exposure_5x5": {
+      "passed": true,
+      "tiles": 25,
+      "runtime_seconds": 2.7684365999994043,
+      "output_shape": [
+        640,
+        640,
+        3
+      ],
+      "placement_p95_px": 0.017650820562479675,
+      "seam_mae": 0.003776770882541314,
+      "coverage_fraction": 1.0,
+      "fallback_count": 0,
+      "direct_source_mae": 0.03010997734963894
+    },
+    "low_texture_1x12": {
+      "passed": true,
+      "tiles": 12,
+      "output_shape": [
+        64,
+        627,
+        3
+      ],
+      "expected_width_range": [
+        625,
+        628
+      ],
+      "coverage_fraction": 1.0,
+      "fallback_count": 11,
+      "quality_status": "review"
+    },
+    "sixteen_bit_3x3": {
+      "passed": true,
+      "tiles": 9,
+      "dtype": "uint16",
+      "output_shape": [
+        360,
+        360,
+        3
+      ],
+      "placement_p95_px": 0.006953457999170403,
+      "coverage_fraction": 1.0,
+      "fallback_count": 0
+    },
+    "learned_no_regression_gate": {
+      "passed": true,
+      "device": "cuda",
+      "patterns": [
+        "texture",
+        "near-black",
+        "flat",
+        "hard-edges"
+      ],
+      "baseline_mae": [
+        0.3334481716156006,
+        0.011697880923748016,
+        2.2919266484677792e-10,
+        0.1803710162639618
+      ],
+      "corrected_mae": [
+        0.2057364284992218,
+        0.00550475250929594,
+        2.2919266484677792e-10,
+        0.1803710162639618
+      ],
+      "accepted": [
+        true,
+        true,
+        false,
+        false
+      ],
+      "no_regression": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "exact_identity": true,
+      "zero_identity_flow": true,
+      "identity_rejected": true
+    }
+  },
+  "intended_use": "Engineering stress evidence only; not clinical validation."
+}
